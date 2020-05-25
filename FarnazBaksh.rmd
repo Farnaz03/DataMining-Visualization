@@ -19,7 +19,7 @@ library(dplyr)
 
 ##Load Dataset & preview
 ``` {r}
-data<-read.csv("/Users/Dell/Desktop/DMViz Assigment/camera_dataset.csv")
+data<-read.csv("/Users/Dell/Desktop/DataMining-Visualization/camera_dataset.csv")
 head(data)
 ```
 
@@ -29,18 +29,17 @@ dimension<-dim(data)
 cat("The dimension of the dataset is:", dimension)
 ```
 
-#### Summary of the Dataset
+#### Summary of the Dataset | General Statistical Operation of the Dataset
 ```{r}
 summary(data)
 ```
-
 
 
 ##Question 1: Most Popular Year for Camera Release (in our Dataset)
 ``` {r}
 Year <- table(data$Release.date)
 barplot(Year,
-        main ="Bar Plot of Most Popular Year for Camera Release",
+        main ="Bar Plot showing Most Popular Year for Camera Release",
         xlab="Years",
         col = "#5dbcd2")
 ```
@@ -68,6 +67,7 @@ plot(data$Release.date, data$Dimensions,
      xlab = "Year")
 ```
 
+
 ##Question 4: What is the Max Resolution among the models
 ``` {r}
 hist(data$Max.resolution,
@@ -77,14 +77,107 @@ hist(data$Max.resolution,
 ```
 
 
-##Question ?: Has the weight of a camera increase over the years?
+##Question 5: Has the weight of a camera increase over the years?
+``` {r}
+plot(data$Release.date, data$Weight..inc..batteries., 
+     main ="Scatter Plot showing Weight of Camera over the Years",
+     pch = 20,
+     cex=1.5,
+     col="#800000",
+     ylab = "Weight",
+     xlab = "Year")
+```
+
+```{r}
+ggplot(data, aes(x = Release.date, y = Weight..inc..batteries.)) + geom_point() + ylab("Weight") + xlab("Year")
+
+```
+
+
+###Brand & Prices
+``` {r}
+Brand<-table(data$Brand, data$Price)
+Brand
+hist(data$Brand,
+     main = "???",
+     xlab="Brand",
+     col = "#cce7e8")
+```
+
+``` {r}
+CanonData<-table(data$Brand =="1")
+
+FujiData<-table(data$Brand == "2")
+
+NikonData<-table(data$Brand == "3")
+
+#BrandData<-table(CanonData,FujiData,NikonData)
+#BrandData
+```
+
+
+ggplot(data, aes(x = Brand,  y = Price)) + 
+  geom_boxplot() + ylab("Price") + xlab("Brand") +
+  ggtitle("Title")
+
+```{r}
+CanonData<-table(data$Brand =="1", data$Model)
+CanonData
+```
 
 ##Question ?: Correlation between Normal and Macro Focus Range
+```{r}
+ggplot(data.aes(y= ))
 
+```
 
 ##Question ?: Has storage increase over the years?
+``` {r}
+Storage_Price <- table(data$Release.date, data$Storage.included)
+
+ggplot(data, aes(x=Storage_Price)) +
+  geom_histogram()
+```
 
 ##Question ?: Did Canon Powershot prices increase?
+
+
+``` {r}
+CanonDataPrice<-data[c(0:97), c(1, 14)]
+#CanonDataPrice
+
+#ggplot(data, aes(x = CanonDataPrice)) + 
+#  geom_boxplot() + ylab("Price") + xlab("Brand") +
+#  ggtitle("Title")
+
+#hist(data$Price[data$Brand =="3" & data$Price],
+#     main="Title")
+```
+
+##Comparing Prices of the Camera Brands
+``` {r}
+hist(data$Price [data$Brand =="1"],
+     main ="Prices for Canon PowerShot",
+     breaks= 2)
+
+hist(data$Price [data$Brand =="2"],
+     main = "Prices for Fujifilm FinePix",
+     breaks= 3)
+
+hist(data$Price [data$Brand =="3"],
+     main = "Prices for Nikon Coolpix",
+     breaks= 3)
+```
+
+### Price for a 16GB in 2007
+``` {r}
+input<- data[, c('Dimensions', 'Price')]
+#print(input)
+hist(input)
+```
+
+##Question ?: Most afforable camera?
+##Question ?" Most expensive camera?
 
 ##Question ?: The relationship between weight and dimension?
 
