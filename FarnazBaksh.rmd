@@ -1,0 +1,129 @@
+---
+title: "Camera Dataset for CSE4202 Data Mining & Visualization"
+author: "Farnaz Baksh"
+date: "5/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Import Libraries
+``` {r message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(gridExtra)
+library(dplyr)
+```
+
+##Load Dataset & preview
+``` {r}
+data<-read.csv("/Users/Dell/Desktop/DMViz Assigment/camera_dataset.csv")
+head(data)
+```
+
+#### Dimension of the Dataset
+``` {r}
+dimension<-dim(data)
+cat("The dimension of the dataset is:", dimension)
+```
+
+#### Summary of the Dataset
+```{r}
+summary(data)
+```
+
+
+
+##Question 1: Most Popular Year for Camera Release (in our Dataset)
+``` {r}
+Year <- table(data$Release.date)
+barplot(Year,
+        main ="Bar Plot of Most Popular Year for Camera Release",
+        xlab="Years",
+        col = "#5dbcd2")
+```
+
+##Question 2: Has there been an increase in Max Resolution over the years?
+``` {r}
+plot(data$Release.date, data$Max.resolution, 
+     main ="Scatter Plot of Max Resolution over the Years",
+     pch = 20,
+     cex=1.5,
+     col="#1979a9",
+     ylab = "Resolution",
+     xlab = "Year")
+```
+
+
+##Question 3: Describe the relationship between Dimension and Year 
+``` {r}
+plot(data$Release.date, data$Dimensions, 
+     main ="???",
+     pch = 20,
+     cex=1.8,
+     col="#e07b39",
+     ylab = "Dimension",
+     xlab = "Year")
+```
+
+##Question 4: What is the Max Resolution among the models
+``` {r}
+hist(data$Max.resolution,
+     main = "Histogram of Max Resolution",
+     xlab="Max Resolution",
+     col = "#cce7e8")
+```
+
+
+##Question ?: Has the weight of a camera increase over the years?
+
+##Question ?: Correlation between Normal and Macro Focus Range
+
+
+##Question ?: Has storage increase over the years?
+
+##Question ?: Did Canon Powershot prices increase?
+
+##Question ?: The relationship between weight and dimension?
+
+##Question ?: Does Weight affect Price?
+
+
+##Question 10: Which property influence price the most?
+
+
+##Question 11: What is the prices of Cameras with Max Resolution more than 2000
+
+```{r}
+#filter the data set  to extract observations where max resolution is greater than 2000
+filtered_maxRes<-data%>%
+  filter(Max.resolution>2000)
+filtered_maxRes
+```
+
+
+```{r}
+ggplot(data, aes(x=filtered_maxRes)) +
+         geom_dotplot(dotsize=0.2)
+```
+
+
+
+
+##Scatterplot
+```{r}
+ggplot(data, aes(x = Max.resolution, y = Price)) +
+  geom_point()
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(data$Storage.included, data$Weight..inc..batteries.)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
