@@ -36,7 +36,7 @@ summary(data)
 
 #### Summary of the Sub-Dataset of Variables we used in this Analysis
 ```{r}
-sub_data<- data[, c(1:5, 11:14)]
+sub_data<- data[, c(1:5, 9:14)]
 
 dimension<-dim(sub_data)
 cat("The dimension of the dataset is:", dimension, "\n", "\n")
@@ -114,7 +114,7 @@ From the year 1996 to 2007, the most popular storage size from our cameras datas
 ##Question 6: What is the average price for a Canon Powershot camera?
 ``` {r}
 ggplot(data, aes( x=Price, y=Brand == "1")) +
-  geom_boxplot(color="#6e4d00", fill="#e6c26e") + ylab("Brand: Canon Powershot") + ggtitle("Price for Canon Powershot")+ theme(plot.title = element_text(hjust = 0.5))
+  geom_boxplot(color="#6e4d00", fill="#e6c26e") + ylab("Brand: Canon Powershot") + ggtitle("Boxplot showing Price for Canon Powershot")+ theme(plot.title = element_text(hjust = 0.5))
 ```
 ###Output for Question 6: What is the average price for a Canon PowerShot camera?
 Based on the box plot diagram, the average price for a Canon PowerShot camera falls below $500. The FALSE value shows the prices for the other brands (i.e. Fujifilm FinePix and Nikon Coolpix) which shows some outliers.
@@ -134,24 +134,28 @@ ggplot(data, aes(x=Release.date, y=Weight..inc..batteries.)) +
 The diagram shows that there has been a decline in camera weight from the years 1996 to 2007. The slope depicts a fall in the data visualization diagram. 
 
 
-##Question 8: Which Camera Brand is most affordable? [Based on our Dataset]
+##Question 8: Which brand has the widest variety of affordable camera models? [Based on our Dataset]
 ``` {r}
 hist(data$Price [data$Brand =="1"],
      main ="Prices for Canon PowerShot",
-     breaks= 10)
+     col = "#fad67a",
+     xlab = "Price")
 
 hist(data$Price [data$Brand =="2"],
      main = "Prices for Fujifilm FinePix",
-     breaks= 30)
+     col = "#cfa744",
+     xlab = "Price")
 
 hist(data$Price [data$Brand =="3"],
      main = "Prices for Nikon Coolpix",
-     breaks= 3)
+     col = "#fad473",
+     xlab = "Price")
+
 ```
 
 
 
-##Question 9: What are the prices of Cameras with Max Resolution more than 4000
+##Question 9: What are the prices of Cameras with Max Resolution more than 4000 pixels?
 ```{r}
 #filter the dataset  to extract observations where max resolution is greater than 4000
 filtered_maxRes<-data%>%
@@ -159,11 +163,20 @@ filtered_maxRes<-data%>%
 filtered_maxRes[, c(1:2,4, 14)]
 
 ggplot(filtered_maxRes, aes(x = Price, fill = Max.resolution)) + 
-  geom_bar(position = "dodge")
+  geom_bar(position = "dodge", fill="#c07bed") + ggtitle("Barplot showing Max Resolution > 4000")+ theme(plot.title = element_text(hjust = 0.5))
 
 ```
 
-##Question 10:
+##Question 10: Is there Correlation between Normal and Macro Focus Range?
+```{r}
+
+#ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range, fill = "Abundance")) +
+#  geom_tile() + xlab(label = "Normal Focus Range")
+
+ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range)) +
+  geom_tile(fill ="#e86b84") + xlab(label = "Normal Focus Range") + ylab(label = "Macro Focus Range") + ggtitle("Heatmap showing the relation between Focus Range") + theme(plot.title = element_text(hjust = 0.5))
+
+```
 
 
 
@@ -212,7 +225,7 @@ CanonData
 ###HEATMAPS
 
 ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range, fill = "Abundance")) +
-  geom_tile() + xlab(label = "Normal")
+  geom_tile() + xlab(label = "Normal Focus Range")
 
 ```
 
