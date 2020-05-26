@@ -152,6 +152,8 @@ hist(data$Price [data$Brand =="3"],
      xlab = "Price")
 
 ```
+###Output for Question 8: Which camera brand has the most affordable variety of models? (based on our dataset)
+Based on the visualization, it can be seen that most Canon PowerShot models falls in the price range of 100-150. Whereas for the Nikon Coolpix models, the prices fall between 200-250. However for the Fujifilm FinePix, thef=re seems to be many outliers, thus it is hard to determine a narrow range for the prices. It can be shown that most camera prices for Fujifilm FinePix falls below 250. In conclusion, the widest variety of the cheapest camera cost is the Canon PowerShot. 
 
 
 
@@ -166,6 +168,10 @@ ggplot(filtered_maxRes, aes(x = Price, fill = Max.resolution)) +
   geom_bar(position = "dodge", fill="#c07bed") + ggtitle("Barplot showing Max Resolution > 4000")+ theme(plot.title = element_text(hjust = 0.5))
 
 ```
+###Output for Question 9: What are the prices of Cameras with Max Resolution more than 4000 pixels?
+The barplot shows that one could obtain four cameras in the price range of 1500-1800. Four other cameras are also available in the price range of 150-250.
+This is ideal for persons who wants large file formats so that they can manipulate their images in post edits.
+
 
 ##Question 10: Is there Correlation between Normal and Macro Focus Range?
 ```{r}
@@ -177,123 +183,8 @@ ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range)) +
   geom_tile(fill ="#e86b84") + xlab(label = "Normal Focus Range") + ylab(label = "Macro Focus Range") + ggtitle("Heatmap showing the relation between Focus Range") + theme(plot.title = element_text(hjust = 0.5))
 
 ```
+###Output for Question 10: Is there a correlation between Normal and Macro Focus Range?
+Most cameras in our dataset has a normal focus distance that ranges between 25-75 and a Macro Focus range that is centered around 1-15. This range signifies how far away or how close someone can be with the camera to take clear and in-focus shots.
 
 
 
-###Brand & Prices
-``` {r}
-#Brand<-table(data$Brand, data$Price)
-#Brand
-#hist(data$Brand,
-#     main = "???",
-#     xlab="Brand",
-#     col = "#cce7e8")
-
-#Change histogram plot line colors by groups ###THIS WORKS 
-#ggplot(data, aes(x=Price, fill=Brand== "3")) +
-#  geom_histogram()
-
-ggplot(data, aes(y=Brand == "1", x=Price)) + 
-  geom_boxplot() + ylab("Canon Powershot")
-```
-
-
-``` {r}
-CanonData<-table(data$Brand =="1")
-
-FujiData<-table(data$Brand == "2")
-
-NikonData<-table(data$Brand == "3")
-
-#BrandData<-table(CanonData,FujiData,NikonData)
-#BrandData
-```
-
-
-ggplot(data, aes(x = Brand,  y = Price)) + 
-  geom_boxplot() + ylab("Price") + xlab("Brand") +
-  ggtitle("Title")
-
-```{r}
-CanonData<-table(data$Brand =="1", data$Model)
-CanonData
-```
-
-##Question ?: Correlation between Normal and Macro Focus Range
-```{r}
-#ggplot(data.aes(y= ))
-###HEATMAPS
-
-ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range, fill = "Abundance")) +
-  geom_tile() + xlab(label = "Normal Focus Range")
-
-```
-
-##Question ?: Has storage increase over the years?
-``` {r}
-Storage_Price <- table(data$Release.date, data$Storage.included)
-
-ggplot(data, aes(x=Storage_Price)) +
-  geom_histogram()
-```
-
-##Question ?: Did Canon Powershot prices increase?
-
-
-``` {r}
-CanonDataPrice<-data[c(0:97), c(1, 14)]
-#CanonDataPrice
-
-#ggplot(data, aes(x = CanonDataPrice)) + 
-#  geom_boxplot() + ylab("Price") + xlab("Brand") +
-#  ggtitle("Title")
-
-#hist(data$Price[data$Brand =="3" & data$Price],
-#     main="Title")
-```
-
-
-### Price for a 16GB in 2007
-``` {r}
-input<- data[, c('Dimensions', 'Price')]
-#print(input)
-hist(input)
-#table(data$Brand =="1"
-```
-
-##Question ?: Most afforable camera?
-##Question ?" Most expensive camera?
-
-##Question ?: The relationship between weight and dimension?
-
-##Question ?: Does Weight affect Price?
-
-
-##Question 10: Which property influence price the most?
-
-
-
-```{r}
-ggplot(data, aes(x=filtered_maxRes)) +
-         geom_dotplot(dotsize=0.2)
-```
-
-
-
-
-##Scatterplot
-```{r}
-ggplot(data, aes(x = Max.resolution, y = Price)) +
-  geom_point()
-
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(data$Storage.included, data$Weight..inc..batteries.)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
