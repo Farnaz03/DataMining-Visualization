@@ -107,9 +107,22 @@ The diagram shows that there has been a decline in camera weight from the years 
 
 
 
-##Question 8: Which camera brand is most affordable?
+##Question 8: Which brand has the widest variety of affordable camera models ? (based on our dataset)
+
+###Output for Question 8: Which camera brand has the most affordable variety of models? (based on our dataset)
+Based on the visualization, it can be seen that most Canon PowerShot models falls in the price range of 100-150. Whereas for the Nikon Coolpix models, the prices fall between 200-250. However for the Fujifilm FinePix, thef=re seems to be many outliers, thus it is hard to determine a narrow range for the prices. It can be shown that most camera prices for Fujifilm FinePix falls below 250. In conclusion, the widest variety of the cheapest camera cost is the Canon PowerShot. 
+
+##Question 9: What are the prices of Cameras with Max Resolution more than 4000 pixels?
+
+###Output for Question 9: What are the prices of Cameras with Max Resolution more than 4000 pixels?
+The barplot shows that one could obtain four cameras in the price range of 1500-1800. Four other cameras are also available in the price range of 150-250.
+This is ideal for persons who wants large file formats so that they can manipulate their images in post edits.
 
 
+##Question 10: Is there a correlation between Normal and Macro Focus Range?
+
+###Output for Question 10: Is there a correlation between Normal and Macro Focus Range?
+Most cameras in our dataset has a normal focus distance that ranges between 25-75 and a Macro Focus range that is centered around 1-15. This range signifies how far away or how close someone can be with the camera to take clear and in-focus shots.
 
 
 ```{r}
