@@ -35,7 +35,7 @@ summary(data)
 ```
 
 
-##Question 1: Most Popular Year for Camera Release (in our Dataset)
+##Question 1: Which year had the most camera releases?
 ``` {r}
 Year <- table(data$Release.date)
 barplot(Year,
@@ -43,6 +43,9 @@ barplot(Year,
         xlab="Years",
         col = "#5dbcd2")
 ```
+###Output for Question 1: Which year had the most camera releases?
+Based on our dataset, we can see a steadily increase in the amount of camera production over the years. Most of the cameras went on sale in the years; 2004, 2006 and 2007. At the beginning of the year 2001, it can be seen that the camera production has doubled onwards.   
+
 
 ##Question 2: Has there been an increase in Max Resolution over the years?
 ``` {r}
@@ -54,30 +57,39 @@ plot(data$Release.date, data$Max.resolution,
      ylab = "Resolution",
      xlab = "Year")
 ```
+###Output for Question 2: Has there been an increase in Max Resolution over the years?
+The visualization plot shows a steadily increase in the camera's max resolution over the period of 1996-2007. From the year 2000, resolution has entered in the 3000 dimensions in pixels. Then from 2002, the dimensions increased by another 1000 pixels. 
+
+###Output for Question 3: Has there been an decrease in Low Resolution over the years?
+In a contradictory conclusion, there has been an increase rather than a decrease in low resolution over the years. This means that prior to 2001, the lowest resolution was approximately 500 pixels and then in 2007, the lowest was around 1000 resolution.
 
 
-##Question 3: Describe the relationship between Dimension and Year 
+##Question 4: Is there any relationship between Dimension and Year? 
 ``` {r}
 plot(data$Release.date, data$Dimensions, 
-     main ="???",
+     main ="Relationship between the Dimension and Year",
      pch = 20,
      cex=1.8,
      col="#e07b39",
      ylab = "Dimension",
      xlab = "Year")
 ```
+###Output for Question 4: Is there any relationship between Dimension and Year?
+It is evident from our scatter plot that most cameras has a dimension between 80 to 120 from 2000 onwards. Based on our dataset, we can conclude that camera models of Canon Powershot, Fujifilm FinePix and Nikon Coolpix falls most popularly in these dimensions.
 
 
-##Question 4: What is the Max Resolution among the models
+##Question 5: What is the most popular storage size for cameras?
 ``` {r}
 hist(data$Max.resolution,
-     main = "Histogram of Max Resolution",
+     main = "Histogram of Storage",
      xlab="Max Resolution",
      col = "#cce7e8")
 ```
+###Output for Question 5: What is the most popular storage size for cameras?
+From the year 1996 to 2007, the most popular storage size from our cameras dataset is 16GB. The runner up storage included for our cameras are 32GB and 8GB. 
 
 
-##Question 5: Has the weight of a camera increase over the years?
+##Question 6: Has the weight of a camera increase over the years?
 ``` {r}
 plot(data$Release.date, data$Weight..inc..batteries., 
      main ="Scatter Plot showing Weight of Camera over the Years",
@@ -87,6 +99,9 @@ plot(data$Release.date, data$Weight..inc..batteries.,
      ylab = "Weight",
      xlab = "Year")
 ```
+###Output for Question 6: 
+
+
 
 ```{r}
 ggplot(data, aes(x = Release.date, y = Weight..inc..batteries.)) + geom_point() + ylab("Weight") + xlab("Year")
