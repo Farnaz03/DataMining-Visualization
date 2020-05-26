@@ -88,8 +88,11 @@ hist(data$Max.resolution,
 ###Output for Question 5: What is the most popular storage size for cameras?
 From the year 1996 to 2007, the most popular storage size from our cameras dataset is 16GB. The runner up storage included for our cameras are 32GB and 8GB. 
 
+###Output for Question 6: What is the average price for a Canon PowerShot camera?
+Based on the box plot diagram, the average price for a Canon PowerShot camera falls below $500. The FALSE value shows the prices for the other brands (i.e. Fujifilm FinePix and Nikon Coolpix) which shows some outliers.
 
-##Question 6: Has the weight of a camera increase over the years?
+
+##Question 7: What is the weight distribution of the cameras over the period of time?
 ``` {r}
 plot(data$Release.date, data$Weight..inc..batteries., 
      main ="Scatter Plot showing Weight of Camera over the Years",
@@ -99,7 +102,13 @@ plot(data$Release.date, data$Weight..inc..batteries.,
      ylab = "Weight",
      xlab = "Year")
 ```
-###Output for Question 6: 
+###Output for Question 7: What is the weight distribution of the cameras over the period of time?
+The diagram shows that there has been a decline in camera weight from the years 1996 to 2007. The slope depicts a fall in the data visualization diagram. 
+
+
+
+##Question 8: Which camera brand is most affordable?
+
 
 
 
