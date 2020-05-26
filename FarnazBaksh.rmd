@@ -1,7 +1,7 @@
 ---
 title: "Camera Dataset for CSE4202 Data Mining & Visualization"
 author: "Farnaz Baksh"
-date: "5/25/2020"
+date: "5/21/2020"
 output: html_document
 ---
 
@@ -34,8 +34,18 @@ cat("The dimension of the dataset is:", dimension)
 summary(data)
 ```
 
+#### Summary of the Sub-Dataset of Variables we used in this Analysis
+```{r}
+sub_data<- data[, c(1:5, 11:14)]
 
-##Question 1: Most Popular Year for Camera Release (in our Dataset)
+dimension<-dim(sub_data)
+cat("The dimension of the dataset is:", dimension, "\n", "\n")
+
+summary(sub_data)
+```
+
+
+##Question 1: Which year had the most camera releases?
 ``` {r}
 Year <- table(data$Release.date)
 barplot(Year,
@@ -43,6 +53,9 @@ barplot(Year,
         xlab="Years",
         col = "#5dbcd2")
 ```
+###Output for Question 1: Which year had the most camera releases?
+Based on our dataset, we can see a steadily increase in the amount of camera production over the years. Most of the cameras went on sale in the years; 2004, 2006 and 2007. At the beginning of the year 2001, it can be seen that the camera production has doubled onwards.   
+
 
 ##Question 2: Has there been an increase in Max Resolution over the years?
 ``` {r}
@@ -54,55 +67,123 @@ plot(data$Release.date, data$Max.resolution,
      ylab = "Resolution",
      xlab = "Year")
 ```
+###Output for Question 2: Has there been an increase in Max Resolution over the years?
+The visualization plot shows a steadily increase in the camera's max resolution over the period of 1996-2007. From the year 2000, resolution has entered in the 3000 dimensions in pixels. Then from 2002, the dimensions increased by another 1000 pixels. 
 
 
-##Question 3: Describe the relationship between Dimension and Year 
+##Question 3: Has there been a decrease in Low Resolution over the years?
+``` {r}
+plot(data$Release.date, data$Low.resolution, 
+     main ="Scatter Plot of Low Resolution over the Years",
+     pch = 20,
+     cex=1.5,
+     col="#39b38e",
+     ylab = "Resolution",
+     xlab = "Year")
+```
+###Output for Question 3: Has there been an decrease in Low Resolution over the years?
+In a contradictory conclusion, there has been an increase rather than a decrease in low resolution over the years. This means that prior to 2001, the lowest resolution was approximately 500 pixels and then in 2007, the lowest was around 1000 resolution.
+
+
+##Question 4: Is there any relationship between Dimension and Year?
 ``` {r}
 plot(data$Release.date, data$Dimensions, 
-     main ="???",
-     pch = 20,
+     main ="Scatter Plot: Relationship between Dimension and Year",
+     pch = 25,
      cex=1.8,
-     col="#e07b39",
+     col="#552b82",
      ylab = "Dimension",
      xlab = "Year")
 ```
+###Output for Question 4: Is there any relationship between Dimension and Year?
+It is evident from our scatter plot that most cameras has a dimension between 80 to 120 from 2000 onwards. Based on our dataset, we can conclude that camera models of Canon Powershot, Fujifilm FinePix and Nikon Coolpix falls most popularly in these dimensions.
 
 
-##Question 4: What is the Max Resolution among the models
+##Question 5: What is the is the most popular storage size for cameras?
 ``` {r}
-hist(data$Max.resolution,
-     main = "Histogram of Max Resolution",
-     xlab="Max Resolution",
+hist(data$Storage.included,
+     main = "Histogram of Storage",
+     xlab="Storage",
+     breaks = 30,
      col = "#cce7e8")
 ```
+###Output for Question 5: What is the most popular storage size for cameras?
+From the year 1996 to 2007, the most popular storage size from our cameras dataset is 16GB. The runner up storage included for our cameras are 32GB and 8GB. 
 
 
-##Question 5: Has the weight of a camera increase over the years?
+##Question 6: What is the average price for a Canon Powershot camera?
 ``` {r}
-plot(data$Release.date, data$Weight..inc..batteries., 
-     main ="Scatter Plot showing Weight of Camera over the Years",
-     pch = 20,
-     cex=1.5,
-     col="#800000",
-     ylab = "Weight",
-     xlab = "Year")
+ggplot(data, aes( x=Price, y=Brand == "1")) +
+  geom_boxplot(color="#6e4d00", fill="#e6c26e") + ylab("Brand: Canon Powershot") + ggtitle("Price for Canon Powershot")+ theme(plot.title = element_text(hjust = 0.5))
+```
+###Output for Question 6: What is the average price for a Canon PowerShot camera?
+Based on the box plot diagram, the average price for a Canon PowerShot camera falls below $500. The FALSE value shows the prices for the other brands (i.e. Fujifilm FinePix and Nikon Coolpix) which shows some outliers.
+
+
+
+##Question 7: What is the weight distribution of the cameras over the period of time?
+``` {r}
+Year <- table(data$Release.date, data$Weight..inc..batteries.)
+#Year
+ggplot(data, aes(x=Release.date, y=Weight..inc..batteries.)) + 
+  geom_point(color='darkblue')+
+  geom_smooth(method=lm, se=FALSE) +ylab("Weight")+ xlab("Year") + ggtitle("Weight Distribution")+ theme(plot.title = element_text(hjust = 0.5))
+
+```
+###Output for Question 7: What is the weight distribution of the cameras over the period of time?
+The diagram shows that there has been a decline in camera weight from the years 1996 to 2007. The slope depicts a fall in the data visualization diagram. 
+
+
+##Question 8: Which Camera Brand is most affordable? [Based on our Dataset]
+``` {r}
+hist(data$Price [data$Brand =="1"],
+     main ="Prices for Canon PowerShot",
+     breaks= 10)
+
+hist(data$Price [data$Brand =="2"],
+     main = "Prices for Fujifilm FinePix",
+     breaks= 30)
+
+hist(data$Price [data$Brand =="3"],
+     main = "Prices for Nikon Coolpix",
+     breaks= 3)
 ```
 
+
+
+##Question 9: What are the prices of Cameras with Max Resolution more than 4000
 ```{r}
-ggplot(data, aes(x = Release.date, y = Weight..inc..batteries.)) + geom_point() + ylab("Weight") + xlab("Year")
+#filter the dataset  to extract observations where max resolution is greater than 4000
+filtered_maxRes<-data%>%
+  filter(Max.resolution>4000)
+filtered_maxRes[, c(1:2,4, 14)]
+
+ggplot(filtered_maxRes, aes(x = Price, fill = Max.resolution)) + 
+  geom_bar(position = "dodge")
 
 ```
+
+##Question 10:
+
 
 
 ###Brand & Prices
 ``` {r}
-Brand<-table(data$Brand, data$Price)
-Brand
-hist(data$Brand,
-     main = "???",
-     xlab="Brand",
-     col = "#cce7e8")
+#Brand<-table(data$Brand, data$Price)
+#Brand
+#hist(data$Brand,
+#     main = "???",
+#     xlab="Brand",
+#     col = "#cce7e8")
+
+#Change histogram plot line colors by groups ###THIS WORKS 
+#ggplot(data, aes(x=Price, fill=Brand== "3")) +
+#  geom_histogram()
+
+ggplot(data, aes(y=Brand == "1", x=Price)) + 
+  geom_boxplot() + ylab("Canon Powershot")
 ```
+
 
 ``` {r}
 CanonData<-table(data$Brand =="1")
@@ -127,7 +208,11 @@ CanonData
 
 ##Question ?: Correlation between Normal and Macro Focus Range
 ```{r}
-ggplot(data.aes(y= ))
+#ggplot(data.aes(y= ))
+###HEATMAPS
+
+ggplot(data, mapping = aes(x = Normal.focus.range, y = Macro.focus.range, fill = "Abundance")) +
+  geom_tile() + xlab(label = "Normal")
 
 ```
 
@@ -154,26 +239,13 @@ CanonDataPrice<-data[c(0:97), c(1, 14)]
 #     main="Title")
 ```
 
-##Comparing Prices of the Camera Brands
-``` {r}
-hist(data$Price [data$Brand =="1"],
-     main ="Prices for Canon PowerShot",
-     breaks= 2)
-
-hist(data$Price [data$Brand =="2"],
-     main = "Prices for Fujifilm FinePix",
-     breaks= 3)
-
-hist(data$Price [data$Brand =="3"],
-     main = "Prices for Nikon Coolpix",
-     breaks= 3)
-```
 
 ### Price for a 16GB in 2007
 ``` {r}
 input<- data[, c('Dimensions', 'Price')]
 #print(input)
 hist(input)
+#table(data$Brand =="1"
 ```
 
 ##Question ?: Most afforable camera?
@@ -186,15 +258,6 @@ hist(input)
 
 ##Question 10: Which property influence price the most?
 
-
-##Question 11: What is the prices of Cameras with Max Resolution more than 2000
-
-```{r}
-#filter the data set  to extract observations where max resolution is greater than 2000
-filtered_maxRes<-data%>%
-  filter(Max.resolution>2000)
-filtered_maxRes
-```
 
 
 ```{r}
@@ -209,6 +272,7 @@ ggplot(data, aes(x=filtered_maxRes)) +
 ```{r}
 ggplot(data, aes(x = Max.resolution, y = Price)) +
   geom_point()
+
 ```
 
 ## Including Plots
