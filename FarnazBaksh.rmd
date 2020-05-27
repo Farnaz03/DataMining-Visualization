@@ -15,6 +15,7 @@ library(tidyverse)
 library(ggplot2)
 library(gridExtra)
 library(dplyr)
+library(rmarkdown)
 ```
 
 ##Load Dataset & preview
@@ -34,16 +35,6 @@ cat("The dimension of the dataset is:", dimension)
 summary(data)
 ```
 
-#### Summary of the Sub-Dataset of Variables we used in this Analysis
-```{r}
-sub_data<- data[, c(1:5, 9:14)]
-
-dimension<-dim(sub_data)
-cat("The dimension of the dataset is:", dimension, "\n", "\n")
-
-summary(sub_data)
-```
-
 
 ##Question 1: Which year had the most camera releases?
 ``` {r}
@@ -55,6 +46,7 @@ barplot(Year,
 ```
 ###Output for Question 1: Which year had the most camera releases?
 Based on our dataset, we can see a steadily increase in the amount of camera production over the years. Most of the cameras went on sale in the years; 2004, 2006 and 2007. At the beginning of the year 2001, it can be seen that the camera production has doubled onwards.   
+
 
 
 ##Question 2: Has there been an increase in Max Resolution over the years?
@@ -71,6 +63,7 @@ plot(data$Release.date, data$Max.resolution,
 The visualization plot shows a steadily increase in the camera's max resolution over the period of 1996-2007. From the year 2000, resolution has entered in the 3000 dimensions in pixels. Then from 2002, the dimensions increased by another 1000 pixels. 
 
 
+
 ##Question 3: Has there been a decrease in Low Resolution over the years?
 ``` {r}
 plot(data$Release.date, data$Low.resolution, 
@@ -83,6 +76,7 @@ plot(data$Release.date, data$Low.resolution,
 ```
 ###Output for Question 3: Has there been an decrease in Low Resolution over the years?
 In a contradictory conclusion, there has been an increase rather than a decrease in low resolution over the years. This means that prior to 2001, the lowest resolution was approximately 500 pixels and then in 2007, the lowest was around 1000 resolution.
+
 
 
 ##Question 4: Is there any relationship between Dimension and Year?
@@ -99,6 +93,7 @@ plot(data$Release.date, data$Dimensions,
 It is evident from our scatter plot that most cameras has a dimension between 80 to 120 from 2000 onwards. Based on our dataset, we can conclude that camera models of Canon Powershot, Fujifilm FinePix and Nikon Coolpix falls most popularly in these dimensions.
 
 
+
 ##Question 5: What is the is the most popular storage size for cameras?
 ``` {r}
 hist(data$Storage.included,
@@ -109,6 +104,7 @@ hist(data$Storage.included,
 ```
 ###Output for Question 5: What is the most popular storage size for cameras?
 From the year 1996 to 2007, the most popular storage size from our cameras dataset is 16GB. The runner up storage included for our cameras are 32GB and 8GB. 
+
 
 
 ##Question 6: What is the average price for a Canon Powershot camera?
@@ -132,6 +128,7 @@ ggplot(data, aes(x=Release.date, y=Weight..inc..batteries.)) +
 ```
 ###Output for Question 7: What is the weight distribution of the cameras over the period of time?
 The diagram shows that there has been a decline in camera weight from the years 1996 to 2007. The slope depicts a fall in the data visualization diagram. 
+
 
 
 ##Question 8: Which brand has the widest variety of affordable camera models? [Based on our Dataset]
@@ -173,6 +170,7 @@ The barplot shows that one could obtain four cameras in the price range of 1500-
 This is ideal for persons who wants large file formats so that they can manipulate their images in post edits.
 
 
+
 ##Question 10: Is there Correlation between Normal and Macro Focus Range?
 ```{r}
 
@@ -188,3 +186,84 @@ Most cameras in our dataset has a normal focus distance that ranges between 25-7
 
 
 
+#### Summary of the Sub-Dataset of Variables we used in this Analysis
+```{r}
+sub_data<- data[, c(1:5, 9:14)]
+
+dimension<-dim(sub_data)
+cat("The dimension of the dataset is:", dimension, "\n", "\n")
+
+summary(sub_data)
+```
+
+##Prep for modeling
+```{r}
+
+sub_data$Release.date <- as.integer(data$Release.date)
+sub_data$Max.resolution <- as.numeric(data$Max.resolution)
+sub_data$Low.resolution <- as.numeric(data$Low.resolution)
+sub_data$Dimensions <- as.numeric(data$Dimensions)
+sub_data$Weight..inc..batteries. <- #as.numeric(data$Weight..inc..batteries.)
+sub_data$Storage.included <- as.numeric(data$Storage.included)
+sub_data$Price <- as.numeric(data$Price)
+
+#attach(sub_data)
+
+set.seed(134)
+sampleSize<-floor(.75*nrow(sub_data))
+trainIndexes<-sample(seq_len(nrow(sub_data)), sampleSize, replace = FALSE)
+train <-sub_data[trainIndexes, ]
+test <- sub_data[-trainIndexes, ]
+```
+
+
+
+##Modeling
+
+```{r}
+#linear_model1<-lm(Release.date ~ Weight..inc..batteries., data = sub_data)
+linear_model1<-lm(Weight..inc..batteries. ~ Release.date, data = sub_data)
+linear_model1
+summary(linear_model1)
+```
+
+```{r}
+linear_model2<- lm(Weight..inc..batteries. ~ Release.date, data = train)
+linear_model2
+
+summary(linear_model2)
+```
+
+
+```{r}
+linear_model3<- lm(Weight..inc..batteries. ~ Dimensions, data = train)
+linear_model3
+
+summary(linear_model3)
+```
+
+
+##Model Selection
+```{r}
+AIC(linear_model2)
+AIC(linear_model3)
+BIC(linear_model2)
+BIC(linear_model3)
+```
+
+```{r}
+pred_Weight..inc..batteries.<-predict(linear_model3, test)
+```
+
+
+```{r}
+actuals_preds <-data.frame(cbind(actuals=test$Weight..inc..batteries.,
+                                 predicteds=pred_Weight..inc..batteries.))
+head(actuals_preds)
+```
+
+
+```{r}
+correlation_accuracy<-cor(actuals_preds)
+correlation_accuracy
+```
